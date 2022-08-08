@@ -1,0 +1,69 @@
+﻿@inject IJSRuntime JSRuntime
+
+
+<section id="slider" class="slider-element swiper_wrapper min-vh-60 min-vh-md-100 include-header">
+    <div class="slider-inner">
+
+        <div class="swiper-container swiper-parent">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide dark">
+                    <div class="container">
+                        <div class="slider-caption slider-caption-center">
+                            <h2 data-animate="fadeInUp">Your Vision, Our Solution</h2>
+                            <p class="d-none d-sm-block" data-animate="fadeInUp" data-delay="200">Lorem ipsum dolor sit amet skugent sakasep yutne yuneeitm git storm gcxe</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide-bg" style="background-image: url('images/slider/swiper/1.jpg');"></div>
+                </div>
+                <div class="swiper-slide dark">
+                    <div class="container">
+                        <div class="slider-caption slider-caption-center">
+                            <h2 data-animate="fadeInUp">Most Competent Teams</h2>
+                            <p class="d-none d-sm-block" data-animate="fadeInUp" data-delay="200">Lorem ipsum dolor sit amet skugent sakasep yutne yuneeitm git storm gcxe.</p>
+                        </div>
+                    </div>
+                    <div class="video-wrap">
+                        <video poster="images/videos/it_company_1_banner.jpg" preload="auto" loop autoplay muted>
+                            <source src='custom-files/videos/it_company_1.mp4' type='video/mp4' />
+                            <source src='images/videos/it_company_1.webm' type='video/webm' />
+                        </video>
+                        <div class="video-overlay" style="background-color: rgba(0,0,0,0.55);"></div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="container">
+                        <div class="slider-caption">
+                            <h2 data-animate="fadeInUp">Great Performance</h2>
+                            <p class="d-none d-sm-block" data-animate="fadeInUp" data-delay="200">You'll be surprised to see the Final Results of your Creation &amp; would crave for more.</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide-bg" style="background-image: url('images/slider/swiper/3.jpg'); background-position: center top;"></div>
+                </div>
+            </div>
+            <div class="slider-arrow-left"><i class="icon-angle-left"></i></div>
+            <div class="slider-arrow-right"><i class="icon-angle-right"></i></div>
+            <div class="slide-number"><div class="slide-number-current"></div><span>/</span><div class="slide-number-total"></div></div>
+        </div>
+
+    </div>
+</section>
+
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            JSRuntime.InvokeVoidAsync("initSlider");
+        }
+    }
+
+    protected  async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            JSRuntime.InvokeVoidAsync("initSlider");
+        }
+    }
+}
