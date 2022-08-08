@@ -1,9 +1,8 @@
 ﻿@inject IJSRuntime JSRuntime
 
 
-<section id="slider" class="slider-element swiper_wrapper min-vh-60 min-vh-md-100 include-header">
+<section id="slider" class="slider-element slider-parallax min-vh-60 min-vh-md-100 with-header swiper_wrapper" data-autoplay="5000" data-speed="650" data-loop="true">
     <div class="slider-inner">
-
         <div class="swiper-container swiper-parent">
             <div class="swiper-wrapper">
                 <div class="swiper-slide dark">
@@ -33,8 +32,8 @@
                 <div class="swiper-slide">
                     <div class="container">
                         <div class="slider-caption">
-                            <h2 data-animate="fadeInUp">Great Performance</h2>
-                            <p class="d-none d-sm-block" data-animate="fadeInUp" data-delay="200">You'll be surprised to see the Final Results of your Creation &amp; would crave for more.</p>
+                            <h2 data-animate="fadeInUp">We Assure the Quality</h2>
+                            <p class="d-none d-sm-block" data-animate="fadeInUp" data-delay="200">Lorem ipsum dolor sit amet skugent sakasep yutne yuneeitm git storm gcxe.</p>
                         </div>
                     </div>
                     <div class="swiper-slide-bg" style="background-image: url('images/slider/swiper/3.jpg'); background-position: center top;"></div>
@@ -63,7 +62,7 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            JSRuntime.InvokeVoidAsync("initSlider");
+            await JSRuntime.InvokeVoidAsync("initSlider");
         }
     }
 }
