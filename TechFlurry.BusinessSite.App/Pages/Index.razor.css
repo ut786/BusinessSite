@@ -1,3 +1,16 @@
-﻿h2{
-    color:brown;
+﻿
+.brand-primary{
+    color: #290959
+}
+
+.brand-secondary {
+    color: #990000
+}
+
+.brand-secondary-light {
+    color: #cc3300
+}
+
+.brand-primary {
+    color: #3300cc
 }
