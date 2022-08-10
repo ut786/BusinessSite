@@ -1,7 +1,9 @@
-﻿@using TechFlurry.BusinessSite.App.Interops
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@using TechFlurry.BusinessSite.App.Interops
 @inherits LayoutComponentBase
 @inject IJSRuntime JSRuntime
 @inject IFirebaseInterop _firebase
+@inject IWebAssemblyHostEnvironment HostEnv
 
 <_Header></_Header>
 
@@ -21,7 +23,10 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            await _firebase.InitFirebase();
+            if (!HostEnv.IsDevelopment())
+            {
+                await _firebase.InitFirebase();
+            }
         }
     }
 }
