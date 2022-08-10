@@ -1,6 +1,20 @@
-﻿@inherits LayoutComponentBase
+﻿@using TechFlurry.BusinessSite.App.Interops
+@inherits LayoutComponentBase
+@inject IFirebaseInterop _firebase
 
 
 @Body
 
 <_Footer></_Footer>
+
+@code {
+    
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            await _firebase.InitFirebase();
+        }
+    }
+}

@@ -1,5 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using TechFlurry.BusinessSite.App.Interops
+@inherits LayoutComponentBase
 @inject IJSRuntime JSRuntime
+@inject IFirebaseInterop _firebase
 
 <_Header></_Header>
 
@@ -12,6 +14,14 @@
         if (firstRender)
         {
             JSRuntime.InvokeVoidAsync("callInit");
+        }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            await _firebase.InitFirebase();
         }
     }
 }
