@@ -6,9 +6,10 @@ namespace TechFlurry.BusinessSite.Api.Infrastructure
 {
     internal class DbClientSingleton
     {
-        private CosmosClient cosmosClient;
+        private readonly CosmosClient cosmosClient;
         private DatabaseResponse db;
         private Container messsagesContainer;
+        private static DbClientSingleton _instance;
 
         private DbClientSingleton()
         {
@@ -18,7 +19,7 @@ namespace TechFlurry.BusinessSite.Api.Infrastructure
 
         private async Task InitClient()
         {
-            db = await cosmosClient.CreateDatabaseIfNotExistsAsync("businesssite_db");
+            db ??= await cosmosClient.CreateDatabaseIfNotExistsAsync("businesssite_db");
         }
 
 
@@ -31,9 +32,9 @@ namespace TechFlurry.BusinessSite.Api.Infrastructure
 
         public static Lazy<Task<DbClientSingleton>> Instance => new(async () =>
             {
-                var dbClient = new DbClientSingleton();
-                await dbClient.InitClient();
-                return dbClient;
+                _instance ??= new DbClientSingleton();
+                await _instance.InitClient();
+                return _instance;
             });
     }
 }
