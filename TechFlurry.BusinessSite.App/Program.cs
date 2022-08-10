@@ -11,11 +11,11 @@ var hostEnv = builder.HostEnvironment;
 
 if (!hostEnv.IsDevelopment())
 {
-    builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+    builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://techflurryapi.azurewebsites.net/") });
 }
 else
 {
-    builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:7071/") });
+    builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:7176/") });
 }
 builder.Services.AddScoped<IFirebaseInterop, FirebaseInterop>();
 
