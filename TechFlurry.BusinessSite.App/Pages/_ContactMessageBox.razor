@@ -1,0 +1,126 @@
+﻿@using TechFlurry.BusinessSite.Models
+@inject HttpClient _httpClient
+@inject IJSRuntime JSRuntime
+
+<div class="fancy-title title-border">
+    <h3>Send us an Email</h3>
+</div>
+
+<div class="form-widget">
+    <div class="form-result">@message</div>
+
+    <form @ref="form" class="row mb-0" id="template-contactform" name="template-contactform">
+        <div class="form-process">
+            <div class="css3-spinner">
+                <div class="css3-spinner-scaler"></div>
+            </div>
+        </div>
+
+        <div class="col-md-4 form-group">
+            <label for="template-contactform-name">Name <small>*</small></label>
+            <input @bind-value="model.Name" type="text" id="template-contactform-name" name="template-contactform-name" class="sm-form-control required" />
+        </div>
+
+        <div class="col-md-4 form-group">
+            <label for="template-contactform-email">Email <small>*</small></label>
+            <input @bind-value="model.Email" type="email" id="template-contactform-email" name="template-contactform-email" class="required email sm-form-control" />
+        </div>
+
+        <div class="col-md-4 form-group">
+            <label for="template-contactform-phone">Phone</label>
+            <input @bind-value="model.Phone" type="text" id="template-contactform-phone" name="template-contactform-phone" class="sm-form-control" />
+        </div>
+
+        <div class="w-100"></div>
+
+        <div class="col-md-8 form-group">
+            <label for="template-contactform-subject">Subject <small>*</small></label>
+            <input @bind-value="model.Subject" type="text" id="template-contactform-subject" name="subject" class="required sm-form-control" />
+        </div>
+
+        <div class="col-md-4 form-group">
+            <label for="template-contactform-service">Services</label>
+            <select @bind="model.Service" id="template-contactform-service" name="template-contactform-service" class="sm-form-control">
+                <option value="">-- Select One --</option>
+                <option value="CustomSoftwareDevelopment">Custom Software Development</option>
+                <option value="ProductDevelopment">Product Development</option>
+                <option value="MobileAppDevelopment">Mobile App Development</option>
+                <option value="WordpressDevelopment">WordPress Development</option>
+                <option value="DMM">Digital Media Marketing</option>
+                <option value="DedicatedResources">Dedicated Resource Outsourcing</option>
+            </select>
+        </div>
+
+        <div class="w-100"></div>
+
+        <div class="col-12 form-group">
+            <label for="template-contactform-message">Message <small>*</small></label>
+            <textarea @bind="model.Message" class="required sm-form-control" id="template-contactform-message" name="template-contactform-message" rows="6" cols="30"></textarea>
+        </div>
+
+        <div class="col-12 form-group">
+            <button class="button button-3d m-0" type="button" id="template-contactform-submit" name="template-contactform-submit" @onclick="Submit">Send Message</button>
+        </div>
+
+        <input type="hidden" name="prefix" value="template-contactform-">
+    </form>
+
+</div>
+
+@code {
+    ElementReference form;
+    ContactMessageModel model = new ContactMessageModel();
+    string message;
+}
+
+@functions {
+    private async void Submit()
+    {
+        if (!string.IsNullOrEmpty(model.Name) && !string.IsNullOrEmpty(model.Email) && IsValidEmail(model.Email) && !string.IsNullOrEmpty(model.Subject))
+        {
+            await JSRuntime.InvokeVoidAsync("formProcessing", form);
+            var response = await _httpClient.PostAsJsonAsync("api/SendContactMessage", model);
+            if (response is not null)
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    message = await response.Content.ReadAsStringAsync();
+                    model = new ContactMessageModel();
+                }
+                await JSRuntime.InvokeVoidAsync("formProcessed", form);
+            }
+        }
+        else if (string.IsNullOrEmpty(model.Name))
+        {
+            message = "Name is required";
+        }
+        else if (string.IsNullOrEmpty(model.Email) || !IsValidEmail(model.Email))
+        {
+            message = "A valid email is required";
+        }
+        else if (string.IsNullOrEmpty(model.Subject))
+        {
+            message = "Subject is required";
+        }
+        StateHasChanged();
+    }
+
+    bool IsValidEmail(string email)
+    {
+        var trimmedEmail = email.Trim();
+
+        if (trimmedEmail.EndsWith("."))
+        {
+            return false;
+        }
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == trimmedEmail;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+}
