@@ -2278,3 +2278,12 @@ function callInit () {
 function initSlider () {
     SEMICOLON.slider.init();
 }
+
+
+function formProcessing (form) {
+    $(form).find('.form-process').fadeIn();
+}
+
+function formProcessed (form) {
+    $(form).find('.form-process').fadeOut();
+}
